@@ -10,7 +10,7 @@
 <body class="p-4">
   <nav class="navbar navbar-expand-lg navbar-dark bg-dark mb-4">
     <div class="container-fluid">
-      <a class="navbar-brand" href="index.html">RubensCalculator</a>
+      <a class="navbar-brand" href="/welcome">RubensCalculator</a>
       <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
         <span class="navbar-toggler-icon"></span>
       </button>
@@ -27,51 +27,57 @@
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 
   <div class="container mt-4">
+    <div class="row">
+      <!-- Loan Payment Calculator -->
+      <div class="col-md-4">
+        <div class="card shadow mb-4 rounded-3 h-100">
+          <div class="card-body">
+            <h3 class="card-title">Loan Payment Calculator</h3>
+            <form onsubmit="event.preventDefault(); calculateLoanPayment();">
+              <input type="number" step="any" id="loanAmount" placeholder="Loan Amount ($)" class="form-control mb-2" required>
+              <input type="number" step="any" id="annualRate" placeholder="Annual Interest Rate (%)" class="form-control mb-2" required>
+              <input type="number" step="any" id="loanTerm" placeholder="Loan Term (years)" class="form-control mb-2" required>
+              <button type="submit" class="btn btn-primary">Calculate</button>
+            </form>
+            <p class="mt-2" id="result1"></p>
+          </div>
+        </div>
+      </div>
 
-    <!-- Loan Payment Calculator -->
-    <div class="card shadow mb-4 rounded-3">
-      <div class="card-body">
-        <h3 class="card-title">Loan Payment Calculator</h3>
-        <form onsubmit="event.preventDefault(); calculateLoanPayment();">
-          <input type="number" step="any" id="loanAmount" placeholder="Loan Amount ($)" class="form-control mb-2" required>
-          <input type="number" step="any" id="annualRate" placeholder="Annual Interest Rate (%)" class="form-control mb-2" required>
-          <input type="number" step="any" id="loanTerm" placeholder="Loan Term (years)" class="form-control mb-2" required>
-          <button type="submit" class="btn btn-primary">Calculate</button>
-        </form>
-        <p class="mt-2" id="result1"></p>
+      <!-- Monthly Car Loan Calculator -->
+      <div class="col-md-4">
+        <div class="card shadow mb-4 rounded-3 h-100">
+          <div class="card-body">
+            <h3 class="card-title">Monthly Car Loan Calculator</h3>
+            <form onsubmit="event.preventDefault(); calculateCarLoan();">
+              <input type="number" step="any" id="carLoanAmount" placeholder="Car Loan Amount ($)" class="form-control mb-2" required>
+              <input type="number" step="any" id="carDownPayment" placeholder="Down Payment ($)" class="form-control mb-2" required>
+              <input type="number" step="any" id="carAPR" placeholder="Annual Interest Rate (APR %)" class="form-control mb-2" required>
+              <input type="number" step="any" id="carLoanTerm" placeholder="Loan Term (Years)" class="form-control mb-2" required>
+              <button type="submit" class="btn btn-primary">Calculate</button>
+            </form>
+            <p class="mt-2" id="carLoanResult"></p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Early Loan Payoff Estimator -->
+      <div class="col-md-4">
+        <div class="card shadow mb-4 rounded-3 h-100">
+          <div class="card-body">
+            <h3 class="card-title">Early Loan Payoff Estimator</h3>
+            <form onsubmit="event.preventDefault(); calculateEarlyPayoff();">
+              <input type="number" step="any" id="earlyLoanAmount" placeholder="Loan Amount ($)" class="form-control mb-2" required>
+              <input type="number" step="any" id="earlyRate" placeholder="Annual Interest Rate (%)" class="form-control mb-2" required>
+              <input type="number" step="any" id="earlyTerm" placeholder="Loan Term (Years)" class="form-control mb-2" required>
+              <input type="number" step="any" id="extraPayment" placeholder="Extra Monthly Payment ($)" class="form-control mb-2" required>
+              <button type="submit" class="btn btn-primary">Calculate</button>
+            </form>
+            <p class="mt-2" id="earlyResult"></p>
+          </div>
+        </div>
       </div>
     </div>
-
-    <!-- Monthly Car Loan Calculator -->
-    <div class="card shadow mb-4 rounded-3">
-      <div class="card-body">
-        <h3 class="card-title">Monthly Car Loan Calculator</h3>
-        <form onsubmit="event.preventDefault(); calculateCarLoan();">
-          <input type="number" step="any" id="carLoanAmount" placeholder="Car Loan Amount ($)" class="form-control mb-2" required>
-          <input type="number" step="any" id="carDownPayment" placeholder="Down Payment ($)" class="form-control mb-2" required>
-          <input type="number" step="any" id="carAPR" placeholder="Annual Interest Rate (APR %)" class="form-control mb-2" required>
-          <input type="number" step="any" id="carLoanTerm" placeholder="Loan Term (Years)" class="form-control mb-2" required>
-          <button type="submit" class="btn btn-primary">Calculate</button>
-        </form>
-        <p class="mt-2" id="carLoanResult"></p>
-      </div>
-    </div>
-
-    <!-- Early Loan Payoff Estimator -->
-    <div class="card shadow mb-4 rounded-3">
-      <div class="card-body">
-        <h3 class="card-title">Early Loan Payoff Estimator</h3>
-        <form onsubmit="event.preventDefault(); calculateEarlyPayoff();">
-          <input type="number" step="any" id="earlyLoanAmount" placeholder="Loan Amount ($)" class="form-control mb-2" required>
-          <input type="number" step="any" id="earlyRate" placeholder="Annual Interest Rate (%)" class="form-control mb-2" required>
-          <input type="number" step="any" id="earlyTerm" placeholder="Loan Term (Years)" class="form-control mb-2" required>
-          <input type="number" step="any" id="extraPayment" placeholder="Extra Monthly Payment ($)" class="form-control mb-2" required>
-          <button type="submit" class="btn btn-primary">Calculate</button>
-        </form>
-        <p class="mt-2" id="earlyResult"></p>
-      </div>
-    </div>
-
   </div>
 
   <script>
@@ -127,5 +133,11 @@
         `<strong>Interest Saved:</strong> ${formatCurrency(interestSaved)}`;
     }
   </script>
+
+  <footer class="footer">
+    <div class="container">
+      <p>Thank you for using RubensCalculator! <a href="https://github.com/Ruben-Guillen/cloudrun" target="_blank">View on GitHub</a></p>
+    </div>
+  </footer>
 </body>
 </html>

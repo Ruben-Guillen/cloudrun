@@ -11,7 +11,7 @@
 <body class="p-4">
   <nav class="navbar navbar-expand-lg navbar-dark bg-dark mb-4">
     <div class="container-fluid">
-      <a class="navbar-brand" href="index.html">RubensCalculator</a>
+      <a class="navbar-brand" href="/welcome">RubensCalculator</a>
       <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
         <span class="navbar-toggler-icon"></span>
       </button>
@@ -28,52 +28,58 @@
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 
   <div class="container mt-4">
+    <div class="row">
+      <!-- Mortgage Monthly Payment Calculator -->
+      <div class="col-md-4">
+        <div class="card shadow mb-4 rounded-3 h-100">
+          <div class="card-body">
+            <h3 class="card-title">Mortgage Monthly Payment Calculator</h3>
+            <form onsubmit="event.preventDefault(); calculateMortgage();">
+              <input type="number" step="any" id="mortgageAmount" placeholder="Loan Amount ($)" class="form-control mb-2" required>
+              <input type="number" step="any" id="mortgageRate" placeholder="Annual Interest Rate (%)" class="form-control mb-2" required>
+              <input type="number" step="any" id="mortgageTerm" placeholder="Loan Term (years)" class="form-control mb-2" required>
+              <button type="submit" class="btn btn-primary">Calculate</button>
+            </form>
+            <p class="mt-2" id="result1"></p>
+          </div>
+        </div>
+      </div>
 
-    <!-- Mortgage Monthly Payment Calculator -->
-    <div class="card shadow mb-4 rounded-3">
-      <div class="card-body">
-        <h3 class="card-title">Mortgage Monthly Payment Calculator</h3>
-        <form onsubmit="event.preventDefault(); calculateMortgage();">
-          <input type="number" step="any" id="mortgageAmount" placeholder="Loan Amount ($)" class="form-control mb-2" required>
-          <input type="number" step="any" id="mortgageRate" placeholder="Annual Interest Rate (%)" class="form-control mb-2" required>
-          <input type="number" step="any" id="mortgageTerm" placeholder="Loan Term (years)" class="form-control mb-2" required>
-          <button type="submit" class="btn btn-primary">Calculate</button>
-        </form>
-        <p class="mt-2" id="result1"></p>
+      <!-- Mortgage Affordability Calculator -->
+      <div class="col-md-4">
+        <div class="card shadow mb-4 rounded-3 h-100">
+          <div class="card-body">
+            <h3 class="card-title">Mortgage Affordability Calculator</h3>
+            <form onsubmit="event.preventDefault(); calculateAffordability();">
+              <input type="number" step="any" id="income" placeholder="Annual Income ($)" class="form-control mb-2" required>
+              <input type="number" step="any" id="monthlyDebt" placeholder="Monthly Debt Payments ($)" class="form-control mb-2" required>
+              <input type="number" step="any" id="downPayment" placeholder="Down Payment ($)" class="form-control mb-2" required>
+              <input type="number" step="any" id="mortgageRateAfford" placeholder="Expected Interest Rate (%)" class="form-control mb-2" required>
+              <input type="number" step="any" id="loanTermAfford" placeholder="Loan Term (Years)" class="form-control mb-2" required>
+              <button type="submit" class="btn btn-primary">Estimate</button>
+            </form>
+            <p class="mt-2" id="result2"></p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Refinance Savings Calculator -->
+      <div class="col-md-4">
+        <div class="card shadow mb-4 rounded-3 h-100">
+          <div class="card-body">
+            <h3 class="card-title">Refinance Savings Calculator</h3>
+            <form onsubmit="event.preventDefault(); calculateRefinanceSavings();">
+              <input type="number" step="any" id="refiBalance" placeholder="Current Loan Balance ($)" class="form-control mb-2" required>
+              <input type="number" step="any" id="refiOldRate" placeholder="Current Interest Rate (%)" class="form-control mb-2" required>
+              <input type="number" step="any" id="refiNewRate" placeholder="New Interest Rate (%)" class="form-control mb-2" required>
+              <input type="number" step="any" id="refiYears" placeholder="Years Remaining" class="form-control mb-2" required>
+              <button type="submit" class="btn btn-primary">Calculate</button>
+            </form>
+            <p class="mt-2" id="refiResult"></p>
+          </div>
+        </div>
       </div>
     </div>
-
-    <!-- Mortgage Affordability Calculator -->
-    <div class="card shadow mb-4 rounded-3">
-      <div class="card-body">
-        <h3 class="card-title">Mortgage Affordability Calculator</h3>
-        <form onsubmit="event.preventDefault(); calculateAffordability();">
-          <input type="number" step="any" id="income" placeholder="Annual Income ($)" class="form-control mb-2" required>
-          <input type="number" step="any" id="monthlyDebt" placeholder="Monthly Debt Payments ($)" class="form-control mb-2" required>
-          <input type="number" step="any" id="downPayment" placeholder="Down Payment ($)" class="form-control mb-2" required>
-          <input type="number" step="any" id="mortgageRateAfford" placeholder="Expected Interest Rate (%)" class="form-control mb-2" required>
-          <input type="number" step="any" id="loanTermAfford" placeholder="Loan Term (Years)" class="form-control mb-2" required>
-          <button type="submit" class="btn btn-primary">Estimate</button>
-        </form>
-        <p class="mt-2" id="result2"></p>
-      </div>
-    </div>
-
-    <!-- Refinance Savings Calculator -->
-    <div class="card shadow mb-4 rounded-3">
-      <div class="card-body">
-        <h3 class="card-title">Refinance Savings Calculator</h3>
-        <form onsubmit="event.preventDefault(); calculateRefinanceSavings();">
-          <input type="number" step="any" id="refiBalance" placeholder="Current Loan Balance ($)" class="form-control mb-2" required>
-          <input type="number" step="any" id="refiOldRate" placeholder="Current Interest Rate (%)" class="form-control mb-2" required>
-          <input type="number" step="any" id="refiNewRate" placeholder="New Interest Rate (%)" class="form-control mb-2" required>
-          <input type="number" step="any" id="refiYears" placeholder="Years Remaining" class="form-control mb-2" required>
-          <button type="submit" class="btn btn-primary">Calculate</button>
-        </form>
-        <p class="mt-2" id="refiResult"></p>
-      </div>
-    </div>
-
   </div>
 
   <script>
@@ -135,5 +141,10 @@
     }
   </script>
 
+  <footer class="footer">
+    <div class="container">
+      <p>Thank you for using RubensCalculator! <a href="https://github.com/Ruben-Guillen/cloudrun" target="_blank">View on GitHub</a></p>
+    </div>
+  </footer>
 </body>
 </html>
