@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <title>RubensCalculator - Investing</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+
+<body class="p-4">
+  <nav class="navbar navbar-expand-lg navbar-dark bg-dark mb-4">
+    <div class="container-fluid">
+      <a class="navbar-brand" href="index.html">RubensCalculator</a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarNav">
+        <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+          <li class="nav-item"><a class="nav-link" href="/">Loans</a></li>
+          <li class="nav-item"><a class="nav-link active" href="page2">Investing</a></li>
+          <li class="nav-item"><a class="nav-link" href="page3">Home Finance</a></li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+  <div class="container mt-4">
+
+    <!-- Roth IRA Growth Calculator -->
+    <div class="card shadow mb-4 rounded-3">
+      <div class="card-body">
+        <h3 class="card-title">Roth IRA Growth Calculator</h3>
+        <form onsubmit="event.preventDefault(); calculateRothIRA();">
+          <input type="number" step="any" id="rothInitial" placeholder="Initial Balance ($)" class="form-control mb-2" required>
+          <input type="number" step="any" id="rothContribution" placeholder="Annual Contribution ($)" class="form-control mb-2" required>
+          <input type="number" step="any" id="rothRate" placeholder="Expected Return (%)" class="form-control mb-2" required>
+          <input type="number" step="any" id="rothYears" placeholder="Years to Invest" class="form-control mb-2" required>
+          <button type="submit" class="btn btn-primary">Calculate</button>
+        </form>
+        <p class="mt-2" id="rothResult"></p>
+      </div>
+    </div>
+
+    <!-- Retirement Goal Calculator -->
+    <div class="card shadow mb-4 rounded-3">
+      <div class="card-body">
+        <h3 class="card-title">Retirement Goal Calculator</h3>
+        <form onsubmit="event.preventDefault(); calculateRetirementGoal();">
+          <input type="number" step="any" id="goalAmount" placeholder="Target Retirement Amount ($)" class="form-control mb-2" required>
+          <input type="number" step="any" id="retireYears" placeholder="Years to Save" class="form-control mb-2" required>
+          <input type="number" step="any" id="expectedReturn" placeholder="Expected Annual Return (%)" class="form-control mb-2" required>
+          <button type="submit" class="btn btn-primary">Calculate</button>
+        </form>
+        <p class="mt-2" id="retireResult"></p>
+      </div>
+    </div>
+
+    <!-- Investment Return Comparison Calculator -->
+    <div class="card shadow mb-4 rounded-3">
+      <div class="card-body">
+        <h3 class="card-title">Investment Return Comparison</h3>
+        <form onsubmit="event.preventDefault(); compareInvestments();">
+          <input type="number" step="any" id="investAmount" placeholder="Investment Amount ($)" class="form-control mb-2" required>
+          <input type="number" step="any" id="rate1" placeholder="Return Rate A (%)" class="form-control mb-2" required>
+          <input type="number" step="any" id="rate2" placeholder="Return Rate B (%)" class="form-control mb-2" required>
+          <input type="number" step="any" id="investYears" placeholder="Years to Invest" class="form-control mb-2" required>
+          <button type="submit" class="btn btn-primary">Compare</button>
+        </form>
+        <p class="mt-2" id="investCompareResult"></p>
+      </div>
+    </div>
+
+  </div>
+
+  <script>
+    function formatCurrency(value) {
+      return `$${value.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
+    }
+
+    function calculateRothIRA() {
+      const initial = parseFloat(document.getElementById('rothInitial').value);
+      const contribution = parseFloat(document.getElementById('rothContribution').value);
+      const rate = parseFloat(document.getElementById('rothRate').value) / 100;
+      const years = parseFloat(document.getElementById('rothYears').value);
+      if (isNaN(initial) || isNaN(contribution) || isNaN(rate) || isNaN(years)) return;
+
+      let futureValue = initial;
+      for (let i = 0; i < years; i++) {
+        futureValue = futureValue * (1 + rate) + contribution;
+      }
+      document.getElementById('rothResult').innerText = `Estimated Roth IRA Value: ${formatCurrency(futureValue)}`;
+    }
+
+    function calculateRetirementGoal() {
+      const goal = parseFloat(document.getElementById('goalAmount').value);
+      const years = parseFloat(document.getElementById('retireYears').value);
+      const returnRate = parseFloat(document.getElementById('expectedReturn').value) / 100 / 12;
+      const months = years * 12;
+      if (isNaN(goal) || isNaN(years) || isNaN(returnRate)) return;
+
+      const monthlySave = goal * returnRate / (Math.pow(1 + returnRate, months) - 1);
+      document.getElementById('retireResult').innerText =
+        `You need to save ${formatCurrency(monthlySave)} per month to reach ${formatCurrency(goal)} in ${years} years.`;
+    }
+
+    function compareInvestments() {
+      const amount = parseFloat(document.getElementById('investAmount').value);
+      const rateA = parseFloat(document.getElementById('rate1').value) / 100;
+      const rateB = parseFloat(document.getElementById('rate2').value) / 100;
+      const years = parseFloat(document.getElementById('investYears').value);
+      if (isNaN(amount) || isNaN(rateA) || isNaN(rateB) || isNaN(years)) return;
+
+      const valueA = amount * Math.pow(1 + rateA, years);
+      const valueB = amount * Math.pow(1 + rateB, years);
+      const better = valueA > valueB ? 'Investment A' : 'Investment B';
+      const gap = Math.abs(valueA - valueB);
+
+      document.getElementById('investCompareResult').innerHTML =
+        `Value from Investment A: ${formatCurrency(valueA)}<br>` +
+        `Value from Investment B: ${formatCurrency(valueB)}<br>` +
+        `<strong>${better}</strong> earns ${formatCurrency(gap)} more over ${years} years.`;
+    }
+  </script>
+</body>
+</html>

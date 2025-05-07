@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>RubensCalculator - Loans</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+
+<body class="p-4">
+  <nav class="navbar navbar-expand-lg navbar-dark bg-dark mb-4">
+    <div class="container-fluid">
+      <a class="navbar-brand" href="index.html">RubensCalculator</a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarNav">
+        <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+          <li class="nav-item"><a class="nav-link active" href="/">Loans</a></li>
+          <li class="nav-item"><a class="nav-link" href="page2">Investing</a></li>
+          <li class="nav-item"><a class="nav-link" href="page3">Home Finance</a></li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+  <div class="container mt-4">
+
+    <!-- Loan Payment Calculator -->
+    <div class="card shadow mb-4 rounded-3">
+      <div class="card-body">
+        <h3 class="card-title">Loan Payment Calculator</h3>
+        <form onsubmit="event.preventDefault(); calculateLoanPayment();">
+          <input type="number" step="any" id="loanAmount" placeholder="Loan Amount ($)" class="form-control mb-2" required>
+          <input type="number" step="any" id="annualRate" placeholder="Annual Interest Rate (%)" class="form-control mb-2" required>
+          <input type="number" step="any" id="loanTerm" placeholder="Loan Term (years)" class="form-control mb-2" required>
+          <button type="submit" class="btn btn-primary">Calculate</button>
+        </form>
+        <p class="mt-2" id="result1"></p>
+      </div>
+    </div>
+
+    <!-- Monthly Car Loan Calculator -->
+    <div class="card shadow mb-4 rounded-3">
+      <div class="card-body">
+        <h3 class="card-title">Monthly Car Loan Calculator</h3>
+        <form onsubmit="event.preventDefault(); calculateCarLoan();">
+          <input type="number" step="any" id="carLoanAmount" placeholder="Car Loan Amount ($)" class="form-control mb-2" required>
+          <input type="number" step="any" id="carDownPayment" placeholder="Down Payment ($)" class="form-control mb-2" required>
+          <input type="number" step="any" id="carAPR" placeholder="Annual Interest Rate (APR %)" class="form-control mb-2" required>
+          <input type="number" step="any" id="carLoanTerm" placeholder="Loan Term (Years)" class="form-control mb-2" required>
+          <button type="submit" class="btn btn-primary">Calculate</button>
+        </form>
+        <p class="mt-2" id="carLoanResult"></p>
+      </div>
+    </div>
+
+    <!-- Early Loan Payoff Estimator -->
+    <div class="card shadow mb-4 rounded-3">
+      <div class="card-body">
+        <h3 class="card-title">Early Loan Payoff Estimator</h3>
+        <form onsubmit="event.preventDefault(); calculateEarlyPayoff();">
+          <input type="number" step="any" id="earlyLoanAmount" placeholder="Loan Amount ($)" class="form-control mb-2" required>
+          <input type="number" step="any" id="earlyRate" placeholder="Annual Interest Rate (%)" class="form-control mb-2" required>
+          <input type="number" step="any" id="earlyTerm" placeholder="Loan Term (Years)" class="form-control mb-2" required>
+          <input type="number" step="any" id="extraPayment" placeholder="Extra Monthly Payment ($)" class="form-control mb-2" required>
+          <button type="submit" class="btn btn-primary">Calculate</button>
+        </form>
+        <p class="mt-2" id="earlyResult"></p>
+      </div>
+    </div>
+
+  </div>
+
+  <script>
+    function formatCurrency(amount) {
+      return `$${amount.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
+    }
+
+    function calculateLoanPayment() {
+      const P = parseFloat(document.getElementById('loanAmount').value);
+      const r = parseFloat(document.getElementById('annualRate').value) / 100 / 12;
+      const n = parseFloat(document.getElementById('loanTerm').value) * 12;
+      if (isNaN(P) || isNaN(r) || isNaN(n)) return;
+      const payment = (P * r) / (1 - Math.pow(1 + r, -n));
+      document.getElementById('result1').innerText = `Monthly Payment: ${formatCurrency(payment)}`;
+    }
+
+    function calculateCarLoan() {
+      const amount = parseFloat(document.getElementById('carLoanAmount').value);
+      const down = parseFloat(document.getElementById('carDownPayment').value);
+      const apr = parseFloat(document.getElementById('carAPR').value) / 100 / 12;
+      const years = parseFloat(document.getElementById('carLoanTerm').value);
+      const months = years * 12;
+      if (isNaN(amount) || isNaN(down) || isNaN(apr) || isNaN(months)) return;
+      const loan = amount - down;
+      const monthly = (loan * apr) / (1 - Math.pow(1 + apr, -months));
+      const totalPaid = monthly * months;
+      const interestPaid = totalPaid - loan;
+      document.getElementById('carLoanResult').innerHTML =
+        `<strong>Monthly Payment:</strong> ${formatCurrency(monthly)}<br>` +
+        `<strong>Total Interest Paid:</strong> ${formatCurrency(interestPaid)}`;
+    }
+
+    function calculateEarlyPayoff() {
+      const P = parseFloat(document.getElementById('earlyLoanAmount').value);
+      const r = parseFloat(document.getElementById('earlyRate').value) / 100 / 12;
+      const n = parseFloat(document.getElementById('earlyTerm').value) * 12;
+      const extra = parseFloat(document.getElementById('extraPayment').value);
+      if (isNaN(P) || isNaN(r) || isNaN(n) || isNaN(extra)) return;
+      const basePayment = (P * r) / (1 - Math.pow(1 + r, -n));
+      const newPayment = basePayment + extra;
+      let balance = P, months = 0, totalInterest = 0;
+      while (balance > 0 && months < 1000) {
+        const interest = balance * r;
+        const principal = newPayment - interest;
+        balance -= principal;
+        totalInterest += interest;
+        months++;
+      }
+      const originalTotalInterest = (basePayment * n) - P;
+      const interestSaved = originalTotalInterest - totalInterest;
+      document.getElementById('earlyResult').innerHTML =
+        `<strong>New Payoff Time:</strong> ${months} months (${(months / 12).toFixed(1)} years)<br>` +
+        `<strong>Interest Saved:</strong> ${formatCurrency(interestSaved)}`;
+    }
+  </script>
+</body>
+</html>
